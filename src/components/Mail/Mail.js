@@ -43,7 +43,7 @@ function Mail() {
     <div className="mail">
       <div className="mail-tools">
         <div className="mail-toolsLeft">
-          <IconButton onClick={() => navigate("/")}>
+          <IconButton onClick={() => navigate(-1)}>
             <ArrowBackIcon />
           </IconButton>
 

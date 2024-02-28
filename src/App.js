@@ -21,6 +21,7 @@ function App() {
   const sendMessageIsOpen = useSelector(selectSendMessageIsOpen);
   const user = useSelector(selectUser);
   const [emails, setEmails] = useState([]);
+  const [sentEmails, setSentEmails] = useState([]);
 
   const cartCtx = useContext(CartContext)
   const isLoggedIn = cartCtx.isLoggedIn
@@ -38,6 +39,19 @@ function App() {
         )
       }
       );
+
+      db.collection(`${userEmail}sent`)
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) => {
+        return setSentEmails(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }))
+        )
+      }
+      );
+      
   }, []);
 
   return (
@@ -46,10 +60,11 @@ function App() {
         <div className="app">
           <Header />
           <div className="app-body">
-            <Sidebar emails={emails} />
+            <Sidebar emails={emails} sentEmails={sentEmails}/>
             <Routes>
               <Route path="/mail" element={<Mail />} />
               <Route path="/" element={<EmailList emails={emails} />} />
+              <Route path="/sent" element={<EmailList emails={sentEmails} type="sent" />} />
 
             </Routes>
           </div>

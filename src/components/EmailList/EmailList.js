@@ -14,7 +14,7 @@ import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import Section from "../Section/Section";
 import EmailRow from "../EmailRow/EmailRow";
 
-function EmailList({ emails }) {
+function EmailList({ emails, type }) {
   return (
     <div className="emailList">
       <div className="emailList-settings">
@@ -31,11 +31,12 @@ function EmailList({ emails }) {
           <EmailRow
             id={id}
             key={id}
-            title={from}
+            title={type==="sent" ? to : from}
             subject={subject}
             description={message}
             isRead={isRead}
             time={new Date(timestamp?.seconds * 1000).toUTCString()}
+            type={type}
           />
         ))}
 

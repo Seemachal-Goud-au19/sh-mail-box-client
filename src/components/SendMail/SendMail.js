@@ -43,8 +43,8 @@ function SendMail() {
 
     const contentState = editorState.getCurrentContent();
     const rawContent = convertToRaw(contentState);
-    try {
-      await db.collection(to).add({
+    
+       db.collection(to).add({
         to: to,
         from: userEmail,
         subject: subject,
@@ -53,11 +53,19 @@ function SendMail() {
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
 
-      dispatch(closeSendMessage());
-    } catch (error) {
-      console.error("Error adding message to collection:", error);
+       db.collection(`${userEmail}sent`).add({
+        to: to,
+        from: userEmail,
+        subject: subject,
+        message: rawContent.blocks[0].text,
+        isRead: true,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
 
-    }
+      
+  
+
+    dispatch(closeSendMessage());
   };
 
   return (

@@ -10,7 +10,7 @@ import { selectMail } from "../../features/mailSlice";
 import { useDispatch } from "react-redux";
 import { db } from "../../firebase";
 
-function EmailRow({ id, title, subject, description, time, isRead }) {
+function EmailRow({ id, title, subject, description, time, isRead, type }) {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ function EmailRow({ id, title, subject, description, time, isRead }) {
 
   const deleteEmail = (id) => {
     // Access the Firebase Firestore collection and delete the document by its ID
-    db.collection(userEmail).doc(id).delete()
+    db.collection(type === 'sent' ? `${userEmail}sent` : userEmail).doc(id).delete()
       .then(() => {
         console.log("Document successfully deleted!");
       })

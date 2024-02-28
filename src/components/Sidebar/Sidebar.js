@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { openSendMessage } from "../../features/mailSlice";
 
-function Sidebar({ emails }) {
+function Sidebar({ emails, sentEmails }) {
   const [showMore, setShowMore] = useState(false)
 
   const unReadMails = emails.filter(({ id, data: { from, to, subject, message, isRead, timestamp } }) => !isRead)
@@ -44,10 +44,10 @@ function Sidebar({ emails }) {
       <SidebarOption title="Unread" number={unReadMails?.length} />
       <SidebarOption title="Starred" number={0} />
       <SidebarOption title="Drafts" number={0} />
-      <SidebarOption title="Sent" number={0} />
+      <Link to="/sent" className="sidebar-link"><SidebarOption title="Sent" number={sentEmails.length} /></Link>
       <SidebarOption title="Archive" number={0} />
       <SidebarOption title="Spam" number={0} />
-      <SidebarOption Icon={showMore ? ExpandLessIcon : ExpandMoreIcon } showMoreLess={showMoreLess} title={showMore ? "Less" : "More" } />
+      <SidebarOption Icon={showMore ? ExpandLessIcon : ExpandMoreIcon} showMoreLess={showMoreLess} title={showMore ? "Less" : "More"} />
 
       {showMore && <div className="sidebar-footer">
         <div className="sidebar-footerIcons">

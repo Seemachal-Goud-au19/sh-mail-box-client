@@ -23,52 +23,22 @@ function EmailList({ emails }) {
           <IconButton>
             <ArrowDropDownIcon />
           </IconButton>
-          <IconButton>
-            <RedoIcon />
-          </IconButton>
-          <IconButton>
-            <MoreVertIcon />
-          </IconButton>
         </div>
-        <div className="emailList-settingsRight">
-          <IconButton>
-            <ChevronLeftIcon />
-          </IconButton>
-          <IconButton>
-            <ChevronRightIcon />
-          </IconButton>
-          <IconButton>
-            <KeyboardHideIcon />
-          </IconButton>
-          <IconButton>
-            <SettingsIcon />
-          </IconButton>
-        </div>
-      </div>
-      <div className="emailList-sections">
-        <Section Icon={InboxIcon} title="Primary" color="red" selected />
-        <Section Icon={PeopleIcon} title="Social" color="#1A73E8" />
-        <Section Icon={LocalOfferIcon} title="Promotions" color="green" />
-      </div>
 
+      </div>
       <div className="emailList-list">
-        {emails.map(({ id, data: { to, subject, message, isRead, timestamp } }) => (
+        {emails.map(({ id, data: { from, to, subject, message, isRead, timestamp } }) => (
           <EmailRow
             id={id}
             key={id}
-            title={to}
+            title={from}
             subject={subject}
             description={message}
             isRead={isRead}
             time={new Date(timestamp?.seconds * 1000).toUTCString()}
           />
         ))}
-        {/* <EmailRow
-          title="Twitch"
-          subject="Hey fellow streamer!!"
-          description="This is a DOPE"
-          time="10pm"
-        /> */}
+
       </div>
     </div>
   );

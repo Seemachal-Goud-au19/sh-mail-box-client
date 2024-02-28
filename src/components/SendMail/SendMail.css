@@ -2,7 +2,7 @@
     position: absolute;
     bottom: 0px;
     right: 50px;
-    background-color: #404040;
+    background-color: white; 
     width: 40%;
     height: 40%;
     max-width: 500px;
@@ -12,6 +12,14 @@
     flex-direction: column;
     border:  1px solid whitesmoke;
     box-shadow: 0px 5px 7px 0px rgba(0,0,0,0.25);
+    z-index: 10;
+}
+
+.sendMailMax{
+    bottom: 8rem !important;
+    height: 80vh !important;
+    width: 80vw !important;
+    max-width: 80vw !important;
 }
 
 .sendMail-header {
@@ -20,10 +28,11 @@
     justify-content: space-between;
     align-items: center;
     color: grey;
+    background-color: aliceblue;
 }
 
 .sendMail-header > h3 {
-    color: whitesmoke;
+   
     font-size: 13px;
 }
 
@@ -54,7 +63,7 @@
     height: 30px;
     padding: 10px;
     border: none;
-    border-bottom: 1px soldi whitesmoke;
+    border-bottom: 1px solid whitesmoke;
     outline: none;
 }
 
@@ -62,6 +71,26 @@
     flex: 1;
 }
 
+
+
+.sendMail .rdw-editor-wrapper {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 75%;
+    background-color: white; 
+
+  }
+  
+  .sendMail .rdw-editor-main {
+    min-height: 200px;
+  }
+  
+  .sendMail .rdw-editor-toolbar {
+    border-bottom: 1px solid #ccc;
+    border-radius: 5px 5px 0 0;
+  }
+
+  
 
 @media only screen and (max-width: 700px) {   
     .sendMail {
@@ -71,3 +100,8 @@
     }
   
 }
+
+
+
+
+  

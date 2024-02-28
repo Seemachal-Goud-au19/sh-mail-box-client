@@ -64,10 +64,9 @@ const AuthForm = () => {
       }).then((res) => {
         setIsLoading(false)
         if (res.ok) {
-          console.log("log in success")
           return res.json().then((data) => {
             cartCtx.login(data.idToken, data.email)
-          
+
             navigate('/')
 
           })
@@ -98,8 +97,6 @@ const AuthForm = () => {
         if (res.ok) {
           console.log("sign up success")
           setIsLogin(true);
-
-          //'''
         }
         else {
           return res.json().then((data) => {

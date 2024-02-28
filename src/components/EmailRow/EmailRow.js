@@ -2,6 +2,7 @@ import { Checkbox, IconButton } from "@mui/material";
 import React from "react";
 import "./EmailRow.css";
 import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import LabelImportantOutlinedIcon from "@mui/icons-material/LabelImportantOutlined";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from "react-router-dom";
@@ -11,7 +12,6 @@ import { db } from "../../firebase";
 
 function EmailRow({ id, title, subject, description, time, isRead }) {
 
-  console.log("IDDDD", subject, isRead)
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -53,15 +53,15 @@ function EmailRow({ id, title, subject, description, time, isRead }) {
       });
   }
 
- 
+
 
   return (
     <div className="emailRow-container">
+      <Checkbox />
       <div onClick={openMail} className="emailRow">
         <div className="emailRow-options">
-          <Checkbox />
-          <IconButton className={!isRead ? 'active' : ''}>
-            <StarBorderOutlinedIcon />
+          <IconButton className={!isRead ? 'active' : 'inactive'}>
+            <FiberManualRecordIcon />
           </IconButton>
           <IconButton>
             <LabelImportantOutlinedIcon />
@@ -78,7 +78,7 @@ function EmailRow({ id, title, subject, description, time, isRead }) {
 
         {/* <button onClick={() => updateSubject(id)}>Update</button> */}
       </div>
-      <IconButton onClick={() => deleteEmail(id)}><DeleteIcon/></IconButton>
+      <IconButton onClick={() => deleteEmail(id)}><DeleteIcon /></IconButton>
     </div>
   );
 }

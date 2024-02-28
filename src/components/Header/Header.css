@@ -3,6 +3,7 @@
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid whitesmoke;
+    background-color: #9195F6;
 }
 
 .header-left {
@@ -44,6 +45,10 @@
     padding-right: 20px;
     align-items: center;
 }
+
+.header .MuiTooltip-tooltip {
+    font-size: 2rem !important;
+  }
 
 
 @media only screen and (max-width: 500px) {

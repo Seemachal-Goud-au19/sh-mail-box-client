@@ -1,19 +1,22 @@
-import React from "react";
+import React, { useContext }  from "react";
 import "./Header.css";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Avatar, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import AppsIcon from "@mui/icons-material/Apps";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import Tooltip from '@mui/material/Tooltip';
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser, logout } from "../../features/userSlice";
 import { auth } from "../../firebase.js";
 
+import CartContext from "../../store/cart-context.js";
+
 function Header() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
+
+  const cartCtx = useContext(CartContext)
+  const userEmail = localStorage.getItem('email')
 
   const signOut = () => {
     auth.signOut().then(() => {
@@ -38,16 +41,10 @@ function Header() {
         <ArrowDropDownIcon className="header-inputCaret" />
       </div>
       <div className="header-right">
-        <IconButton>
-          <HelpOutlineIcon />
-        </IconButton>
-        <IconButton>
-          <NotificationsIcon />
-        </IconButton>
-        <IconButton>
-          <AppsIcon />
-        </IconButton>
-        <Avatar onClick={signOut} src={user?.photoUrl} />
+    
+           <Tooltip title={<h2>{userEmail}</h2>}>
+        <Avatar onClick={cartCtx.logout}/>
+        </Tooltip>
       </div>
     </div>
   );

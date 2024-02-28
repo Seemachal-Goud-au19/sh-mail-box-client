@@ -13,17 +13,16 @@ const ComposeMailbox = () => {
   const [subject, setSubject] = useState('');
 
   const onEditorStateChange = (editorState) => {
-    console.log("editorState",editorState)
     setEditorState(editorState);
   };
 
   const handleSend = () => {
     const contentState = editorState.getCurrentContent();
     const rawContent = convertToRaw(contentState);
-    
+
     console.log("To:", to);
     console.log("Subject:", subject);
-    console.log("Message:", rawContent);
+    console.log("Message:", rawContent.blocks[0].text);
   };
 
   return (
@@ -59,8 +58,8 @@ const ComposeMailbox = () => {
             onEditorStateChange={onEditorStateChange}
             toolbar={{
               options: [
-                'inline', 'blockType', 'fontSize', 'fontFamily', 'list', 
-                'textAlign', 'colorPicker', 'link', 'embedded', 'emoji', 
+                'inline', 'blockType', 'fontSize', 'fontFamily', 'list',
+                'textAlign', 'colorPicker', 'link', 'embedded', 'emoji',
                 'remove', 'history'
               ],
             }}

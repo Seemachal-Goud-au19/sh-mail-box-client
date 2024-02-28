@@ -1,63 +1,66 @@
 import { Button, IconButton } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import "./Sidebar.css";
-import AddIcon from "@mui/icons-material/Add";
-import InboxIcon from "@mui/icons-material/Inbox";
-import StarIcon from "@mui/icons-material/Star";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import LabelImportantIcon from "@mui/icons-material/LabelImportant";
-import NearMeIcon from "@mui/icons-material/NearMe";
-import NoteIcon from "@mui/icons-material/Note";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import PersonIcon from "@mui/icons-material/Person";
-import DuoIcon from "@mui/icons-material/Duo";
-import PhoneIcon from "@mui/icons-material/Phone";
+import PhotoSizeSelectActualIcon from '@mui/icons-material/PhotoSizeSelectActual';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import UnsubscribeIcon from '@mui/icons-material/Unsubscribe';
+import AddCardIcon from '@mui/icons-material/AddCard';
+import LocalAirportIcon from '@mui/icons-material/LocalAirport';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import SidebarOption from "./SidebarOption";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { openSendMessage } from "../../features/mailSlice";
 
 function Sidebar({ emails }) {
+  const [showMore, setShowMore] = useState(false)
+
+  const unReadMails = emails.filter(({ id, data: { from, to, subject, message, isRead, timestamp } }) => !isRead)
+
   const dispatch = useDispatch();
+
+  const showMoreLess = () => {
+    setShowMore(!showMore)
+  }
 
   return (
     <div className="sidebar">
       <Button
         className="sidebar-compose"
         onClick={() => dispatch(openSendMessage())}
-        
+
       >
         Compose
       </Button>
       <Link to="/" className="sidebar-link">
         <SidebarOption
-          Icon={InboxIcon}
           title="Inbox"
           number={emails.length}
           selected={true}
         />
       </Link>
 
-      <SidebarOption Icon={StarIcon} title="Starred" number={12} />
-      <SidebarOption Icon={AccessTimeIcon} title="Snoozed" number={9} />
-      <SidebarOption Icon={LabelImportantIcon} title="Important" number={12} />
-      <SidebarOption Icon={NearMeIcon} title="Sent" number={81} />
-      <SidebarOption Icon={NoteIcon} title="Drafts" number={5} />
-      <SidebarOption Icon={ExpandMoreIcon} title="More" />
+      <SidebarOption title="Unread" number={unReadMails?.length} />
+      <SidebarOption title="Starred" number={0} />
+      <SidebarOption title="Drafts" number={0} />
+      <SidebarOption title="Sent" number={0} />
+      <SidebarOption title="Archive" number={0} />
+      <SidebarOption title="Spam" number={0} />
+      <SidebarOption Icon={showMore ? ExpandLessIcon : ExpandMoreIcon } showMoreLess={showMoreLess} title={showMore ? "Less" : "More" } />
 
-      <div className="sidebar-footer">
+      {showMore && <div className="sidebar-footer">
         <div className="sidebar-footerIcons">
-          <IconButton>
-            <PersonIcon />
-          </IconButton>
-          <IconButton>
-            <DuoIcon />
-          </IconButton>
-          <IconButton>
-            <PhoneIcon />
-          </IconButton>
+          <SidebarOption Icon={PhotoSizeSelectActualIcon} title="Photos" />
+          <SidebarOption Icon={InsertDriveFileIcon} title="Documents" />
+          <SidebarOption Icon={UnsubscribeIcon} title="Subscriptions" />
+          <SidebarOption Icon={AddCardIcon} title="Deals" />
+          <SidebarOption Icon={LocalAirportIcon} title="Travel" />
+
+
         </div>
       </div>
+      }
     </div>
   );
 }

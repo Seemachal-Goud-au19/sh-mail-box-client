@@ -1,77 +1,111 @@
-import React from "react";
+import React, { useState } from "react";
 import "./SendMail.css";
 import CloseIcon from "@mui/icons-material/Close";
+import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
+import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import { Button } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { closeSendMessage } from "../../features/mailSlice";
 import { db } from '../../firebase'
-import firebase from 'firebase/compat/app';
+import firebase from 'firebase/compat/app'; import { EditorState, convertToRaw } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
 
 function SendMail() {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
+
   const dispatch = useDispatch();
 
-  
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
+  const [to, setTo] = useState('');
+  const [subject, setSubject] = useState('');
+  const [maximize, setMaximize] = useState(false)
 
-  const onSubmit = (formData) => {
-    console.log(formData);
-    db.collection(formData.to).add({
-      to: formData.to,
-      subject: formData.subject,
-      message: formData.message,
-      isRead:false,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    });
 
-    dispatch(closeSendMessage());
+  const userEmail = localStorage.getItem('email')
+
+  const onEditorStateChange = (editorState) => {
+    setEditorState(editorState);
+  };
+
+
+  const composeSizeHandler = () => {
+    setMaximize(!maximize)
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    const contentState = editorState.getCurrentContent();
+    const rawContent = convertToRaw(contentState);
+    try {
+      await db.collection(to).add({
+        to: to,
+        from: userEmail,
+        subject: subject,
+        message: rawContent.blocks[0].text,
+        isRead: false,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      dispatch(closeSendMessage());
+    } catch (error) {
+      console.error("Error adding message to collection:", error);
+
+    }
   };
 
   return (
-    <div className="sendMail">
+    <div className={maximize ? "sendMail sendMailMax" : "sendMail"}>
       <div className="sendMail-header">
         <h3>New Message</h3>
-        <CloseIcon
-          onClick={() => dispatch(closeSendMessage())}
-          className="sendMail-close"
-        />
+        <div>
+          {maximize ? <CloseFullscreenIcon onClick={composeSizeHandler} /> : <OpenInFullIcon onClick={composeSizeHandler} />}
+          <CloseIcon
+            onClick={() => dispatch(closeSendMessage())}
+            className="sendMail-close"
+          />
+        </div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit}>
         <input
           name="to"
           placeholder="To"
           type="email"
-          {...register("to", { required: true })}
+          value={to}
+          onChange={(e) => setTo(e.target.value)}
         />
-        {errors.to && <p className="sendMail-error">To is Required!</p>}
+
         <input
           name="subject"
           placeholder="Subject"
           type="text"
-          {...register("subject", { required: true })}
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
         />
-        {errors.subject && (
-          <p className="sendMail-error">Subject is Required!</p>
-        )}
-        <input
-          name="message"
-          placeholder="Message"
-          type="text"
-          className="sendMail-message"
-          {...register("message", { required: true })}
+
+
+        <Editor
+          editorState={editorState}
+          onEditorStateChange={onEditorStateChange}
+          toolbar={{
+            options: [
+              'inline',
+              'link', 'embedded'],
+            // options: [
+            //   'inline', 'blockType', 'fontSize', 'fontFamily', 'list',
+            //   'textAlign', 'colorPicker', 'link', 'embedded', 'emoji',
+            //   'remove', 'history'
+            // ],
+          }}
         />
-        {errors.message && (
-          <p className="sendMail-error">Message is Required!</p>
-        )}
+
         <div className="sendMail-options">
           <Button
             type="submit"

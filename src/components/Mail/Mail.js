@@ -16,11 +16,28 @@ import { IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { selectOpenMail } from "../../features/mailSlice";
 import { useSelector } from "react-redux";
+import {db} from '../../firebase';
+
 
 function Mail() {
   const navigate = useNavigate();
+  const userEmail = localStorage.getItem('email')
 
   const selectedMail = useSelector(selectOpenMail);
+
+  const deleteEmail = (id) => {
+    // Access the Firebase Firestore collection and delete the document by its ID
+    db.collection(userEmail).doc(id).delete()
+      .then(() => {
+        console.log("Document successfully deleted!");
+      })
+      .catch((error) => {
+        console.error("Error removing document: ", error);
+      });
+
+      navigate('/')
+  }
+
 
   return (
     <div className="mail">
@@ -39,7 +56,7 @@ function Mail() {
           </IconButton>
 
           <IconButton>
-            <DeleteIcon />
+            <DeleteIcon onClick={()=>{deleteEmail(selectedMail.id)}}/>
           </IconButton>
 
           <IconButton>

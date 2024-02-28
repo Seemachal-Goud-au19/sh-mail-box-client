@@ -13,7 +13,9 @@ import { selectUser } from "./features/userSlice";
 import AuthForm from "./routes/Auth/AuthForm";
 import { db } from "./firebase";
 
+
 import CartContext from "./store/cart-context";
+import ComposeMailbox from "./components/ComposeMailbox";
 
 function App() {
   const sendMessageIsOpen = useSelector(selectSendMessageIsOpen);
@@ -24,12 +26,10 @@ function App() {
   const isLoggedIn = cartCtx.isLoggedIn
   const userEmail = localStorage.getItem('email')
 
-  console.log("e", emails);
   useEffect(() => {
     db.collection(userEmail)
       .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) => {
-        console.log(">>> snapshot", snapshot)
         return setEmails(
           snapshot.docs.map((doc) => ({
             id: doc.id,
@@ -50,9 +50,12 @@ function App() {
             <Routes>
               <Route path="/mail" element={<Mail />} />
               <Route path="/" element={<EmailList emails={emails} />} />
+
             </Routes>
           </div>
+          <ComposeMailbox />
           {sendMessageIsOpen && <SendMail />}
+
         </div>
       ) : <AuthForm />}
     </>
@@ -63,25 +66,3 @@ function App() {
 export default App;
 
 
-{/* <Router>
-      {!user ? (
-        <Login />
-      ) : (
-        <div className="app">
-          <Header />
-          <div className="app-body">
-            <Sidebar emails={emails} />
-            <Routes>
-              <Route path="/mail">
-                <Mail />
-              </Route>
-              <Route path="/" exact>
-                <EmailList emails={emails} />
-              </Route>
-            </Routes>
-          </div>
-
-          {sendMessageIsOpen && <SendMail />}
-        </div>
-      )}
-    </Router> */}

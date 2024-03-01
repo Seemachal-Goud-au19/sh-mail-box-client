@@ -31,8 +31,9 @@ function Header() {
           <MenuIcon />
         </IconButton>
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzRceIIBz4GgeNszaN5SupI6p1SJE_Bzgk3Q&usqp=CAU"
-          alt="gmail logo"
+          // src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzRceIIBz4GgeNszaN5SupI6p1SJE_Bzgk3Q&usqp=CAU"
+          alt="yahoo logo"
+          src = "https://s.yimg.com/rz/p/yahoo_frontpage_en-US_s_f_p_bestfit_frontpage_2x.png"
         />
       </div>
       <div className="header-middle">

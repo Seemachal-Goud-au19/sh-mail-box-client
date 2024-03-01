@@ -10,8 +10,20 @@
     justify-content: space-between;
     border-bottom: 1px solid whitesmoke;
     background-color: white;
-    z-index: 999;
+    z-index: 20;
     padding-right: 10px;
+}
+
+.emailList-settingsRight {
+    display: flex;
+    margin-right: 40px;
+    color: #5e5e5e;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.emailList-settingsRight .MuiSvgIcon-root{
+    margin-right: 0.5rem;
 }
 
 .emailList-sections {
@@ -20,39 +32,41 @@
     display: flex;
     border-bottom: 1px solid whitesmoke;
     background-color: white;
-    z-index: 999;
+    z-index: 20;
 }
 
 
 /* Hide scrollbar for Chrome, Safari, and Opera */
-.emalList::-webkit-scrollbar{
+.emalList::-webkit-scrollbar {
     display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .emailList {
-    scrollbar-width: none; /* firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-   
+    scrollbar-width: none;
+    /* firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+
 }
 
-@media only screen and (max-width: 500px) {   
-    
-    .emailList-settingsLeft > .MuiIconButton-root{
+@media only screen and (max-width: 500px) {
+
+    .emailList-settingsLeft>.MuiIconButton-root {
         padding-left: 3px;
         padding-right: 3px;
     }
 
-    .emailList-settingsRight > .MuiIconButton-root{
+    .emailList-settingsRight>.MuiIconButton-root {
         padding-left: 3px;
         padding-right: 3px;
     }
 
-    .emailList-settingsLeft{
+    .emailList-settingsLeft {
         margin-left: 10px;
     }
 
-    .emailList-settingsRight{
+    .emailList-settingsRight {
         margin-right: 10px;
     }
 }

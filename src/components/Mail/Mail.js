@@ -12,11 +12,11 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import UnfoldMoreIcon from "@mui/icons-material/UnfoldMore";
 import PrintIcon from "@mui/icons-material/Print";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import { IconButton } from "@mui/material";
+import { IconButton, Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { selectOpenMail } from "../../features/mailSlice";
 import { useSelector } from "react-redux";
-import {db} from '../../firebase';
+import { db } from '../../firebase';
 
 
 function Mail() {
@@ -35,7 +35,7 @@ function Mail() {
         console.error("Error removing document: ", error);
       });
 
-      navigate('/')
+    navigate('/')
   }
 
 
@@ -56,7 +56,7 @@ function Mail() {
           </IconButton>
 
           <IconButton>
-            <DeleteIcon onClick={()=>{deleteEmail(selectedMail.id)}}/>
+            <DeleteIcon onClick={() => { deleteEmail(selectedMail.id) }} />
           </IconButton>
 
           <IconButton>
@@ -80,7 +80,7 @@ function Mail() {
           </IconButton>
         </div>
         <div className="mail-toolsRight">
-          <IconButton>
+          {/* <IconButton>
             <UnfoldMoreIcon />
           </IconButton>
 
@@ -90,7 +90,7 @@ function Mail() {
 
           <IconButton>
             <ExitToAppIcon />
-          </IconButton>
+          </IconButton> */}
         </div>
       </div>
       <div className="mail-body">
@@ -99,8 +99,14 @@ function Mail() {
             <h2>{selectedMail?.subject}</h2>
             <LabelImportantIcon className="mail-important" />
           </div>
-          <p>{selectedMail?.title}</p>
-          <p className="mail-time">{selectedMail?.time}</p>
+          <div className="mail-title">
+
+            <div className="mail-title-avatar">
+              <Avatar />
+              <p>{selectedMail?.title}</p>
+            </div>
+            <p className="mail-time">{selectedMail?.time}</p>
+          </div>
         </div>
 
         <div className="mail-message">

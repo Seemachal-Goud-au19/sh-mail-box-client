@@ -10,7 +10,7 @@ import { selectMail } from "../../features/mailSlice";
 import { useDispatch } from "react-redux";
 import { db } from "../../firebase";
 
-function EmailRow({ id, title, subject, description, time, isRead, type }) {
+function EmailRow({ id, title, subject, description, time, isRead, type, onSelect, isSelected }) {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,16 +28,17 @@ function EmailRow({ id, title, subject, description, time, isRead, type }) {
         time,
       })
     );
-
-    db.collection(userEmail).doc(id).update({
-      isRead: true
-    })
-      .then(() => {
-        console.log("Document successfully updated!");
+    if (type !== "sent") {
+      db.collection(userEmail).doc(id).update({
+        isRead: true
       })
-      .catch((error) => {
-        console.error("Error updating document: ", error);
-      });
+        .then(() => {
+          console.log("Document successfully updated!");
+        })
+        .catch((error) => {
+          console.error("Error updating document: ", error);
+        });
+    }
     navigate("/mail");
   };
 
@@ -53,11 +54,18 @@ function EmailRow({ id, title, subject, description, time, isRead, type }) {
       });
   }
 
+  const handleCheckboxChange = () => {
+    onSelect(id);
+  };
 
 
   return (
     <div className="emailRow-container">
-      <Checkbox />
+      <Checkbox
+        checked={isSelected}
+        onChange={handleCheckboxChange}
+        className="single-mail-checkbox"
+      />
       <div onClick={openMail} className="emailRow">
         <div className="emailRow-options">
           <IconButton className={!isRead ? 'active' : 'inactive'}>
@@ -75,8 +83,6 @@ function EmailRow({ id, title, subject, description, time, isRead, type }) {
           </h4>
         </div>
         <p className="emailRow-time">{time}</p>
-
-        {/* <button onClick={() => updateSubject(id)}>Update</button> */}
       </div>
       <IconButton onClick={() => deleteEmail(id)}><DeleteIcon /></IconButton>
     </div>

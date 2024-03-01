@@ -9,7 +9,7 @@ import AddCardIcon from '@mui/icons-material/AddCard';
 import LocalAirportIcon from '@mui/icons-material/LocalAirport';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import SidebarOption from "./SidebarOption";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { openSendMessage } from "../../features/mailSlice";
 
@@ -17,6 +17,7 @@ function Sidebar({ emails, sentEmails }) {
   const [showMore, setShowMore] = useState(false)
 
   const unReadMails = emails.filter(({ id, data: { from, to, subject, message, isRead, timestamp } }) => !isRead)
+  const { pathname } = useLocation()
 
   const dispatch = useDispatch();
 
@@ -36,15 +37,15 @@ function Sidebar({ emails, sentEmails }) {
       <Link to="/" className="sidebar-link">
         <SidebarOption
           title="Inbox"
-          number={emails.length}
-          selected={true}
+          number={unReadMails?.length}
+          selected={pathname === '/'}
         />
       </Link>
 
-      <SidebarOption title="Unread" number={unReadMails?.length} />
+      {/* <SidebarOption title="Unread" number={unReadMails?.length} /> */}
       <SidebarOption title="Starred" number={0} />
       <SidebarOption title="Drafts" number={0} />
-      <Link to="/sent" className="sidebar-link"><SidebarOption title="Sent" number={sentEmails.length} /></Link>
+      <Link to="/sent" className="sidebar-link"><SidebarOption title="Sent" number={sentEmails.length} selected={pathname.includes('/sent') && true} /></Link>
       <SidebarOption title="Archive" number={0} />
       <SidebarOption title="Spam" number={0} />
       <SidebarOption Icon={showMore ? ExpandLessIcon : ExpandMoreIcon} showMoreLess={showMoreLess} title={showMore ? "Less" : "More"} />

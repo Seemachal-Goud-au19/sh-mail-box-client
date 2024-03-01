@@ -15,11 +15,11 @@ import { db } from "./firebase";
 
 
 import CartContext from "./store/cart-context";
-import ComposeMailbox from "./components/ComposeMailbox";
+
 
 function App() {
   const sendMessageIsOpen = useSelector(selectSendMessageIsOpen);
-  const user = useSelector(selectUser);
+
   const [emails, setEmails] = useState([]);
   const [sentEmails, setSentEmails] = useState([]);
 
@@ -40,7 +40,7 @@ function App() {
       }
       );
 
-      db.collection(`${userEmail}sent`)
+    db.collection(`${userEmail}sent`)
       .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) => {
         return setSentEmails(
@@ -51,7 +51,7 @@ function App() {
         )
       }
       );
-      
+
   }, []);
 
   return (
@@ -60,7 +60,7 @@ function App() {
         <div className="app">
           <Header />
           <div className="app-body">
-            <Sidebar emails={emails} sentEmails={sentEmails}/>
+            <Sidebar emails={emails} sentEmails={sentEmails} />
             <Routes>
               <Route path="/mail" element={<Mail />} />
               <Route path="/" element={<EmailList emails={emails} />} />
@@ -68,7 +68,6 @@ function App() {
 
             </Routes>
           </div>
-          <ComposeMailbox />
           {sendMessageIsOpen && <SendMail />}
 
         </div>

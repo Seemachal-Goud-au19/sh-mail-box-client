@@ -28,30 +28,31 @@ function App() {
   const userEmail = localStorage.getItem('email')
 
   useEffect(() => {
-    db.collection(userEmail)
-      .orderBy("timestamp", "desc")
-      .onSnapshot((snapshot) => {
-        return setEmails(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            data: doc.data(),
-          }))
-        )
-      }
-      );
+    if (userEmail) {
+      db.collection(userEmail)
+        .orderBy("timestamp", "desc")
+        .onSnapshot((snapshot) => {
+          return setEmails(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          )
+        }
+        );
 
-    db.collection(`${userEmail}sent`)
-      .orderBy("timestamp", "desc")
-      .onSnapshot((snapshot) => {
-        return setSentEmails(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            data: doc.data(),
-          }))
-        )
-      }
-      );
-
+      db.collection(`${userEmail}sent`)
+        .orderBy("timestamp", "desc")
+        .onSnapshot((snapshot) => {
+          return setSentEmails(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          )
+        }
+        );
+    }
   }, []);
 
   return (
